@@ -1,0 +1,6 @@
+{
+	"name": "cardinalkeeper",
+	"version": "0.0.1",
+	"description": "Система Кардинал Хранитель",
+	"main": "cardinalkeeper.js"
+}
