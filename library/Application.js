@@ -88,6 +88,10 @@ module.exports = class Application {
 		me._configFile = ini.read(configPath);
 		me._config = me.getConfigSection("application");
 		
+		// Добавляем в конфиг переменную path содержащую абсолютный путь к папке с конфигурационным файлом.
+		var mpath = require("path");
+		me._config.path = mpath.dirname(mpath.resolve(configPath));
+		
 		// Подключить основную базу данных.
 		me._database = me._postgres.createAdapter(me.config.database);
 		
@@ -111,11 +115,13 @@ module.exports = class Application {
 	
 	/**
 	 * Подключить модуль.
+	 * Внимание, относительные пути (начинающиеся с ./) отсчитываются от месторасположения конфига.
 	 * @param {String} path
 	 * @return {CardinalKeeper.Application}
 	 */
 	module(path) {
 		var me = this;
+		path = path.replace(/^.\//, me.config.path + "/");
 		let Module = require(path);
 		let module = new Module(me);
 		me.express.use("/api/" + module.name, module.express);
