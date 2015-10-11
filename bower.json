@@ -1,23 +1,16 @@
 {
-  "name": "khusamov-cardinal",
-  "description": "Кардинал",
-  "authors": [
-    "Khusamov Sukhrob <khusamov@yandex.ru> (http://khusamov.ru/)",
-    "Khusamov Timofey"
-  ],
-  "version": "0.0.1",
-  "keywords": [],
-  "homepage": "",
-  "main": [],
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "dependencies": {
-    "khusamov-extjs": "git@bitbucket.org:khusamov/extjs.git",
-    "pace": "pace#~1.0.2"
-  }
+	
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"bower_components",
+		"test",
+		"tests"
+	],
+	
+	"dependencies": {
+		"khusamov-extjs": "git@bitbucket.org:khusamov/extjs.git",
+		"pace": "pace#~1.0.2"
+	}
+  
 }
