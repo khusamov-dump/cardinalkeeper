@@ -71,7 +71,7 @@ module.exports = class Application {
 			},
 		});
 		
-		me._client = new CardinalKeeper.Client();
+		me._client = new CardinalKeeper.Client(me);
 		me.express.get("/", me._client.middleware);
 	}
 	
@@ -110,7 +110,39 @@ module.exports = class Application {
 	 * @return {Object}
 	 */
 	getConfigSection(section) {
-		return this._configFile[section];
+		
+		let result = this._configFile[section] || {};
+		
+		result.isDefined = function(path) {
+			path = path.split(".");
+			let current = result;
+			let defined = true;
+			path.forEach(item => {
+				if (item in current) {
+					current = current[item];
+				} else {
+					defined = false;
+					return false;
+				}
+			});
+			return defined;
+		};
+		
+		result.get = function(path, defaultValue) {
+			let value = result;
+			path = path.split(".");
+			path.forEach(item => {
+				if (item in value) {
+					value = value[item];
+				} else {
+					value = defaultValue;
+					return false;
+				}
+			});
+			return value;
+		};
+		
+		return result;
 	}
 	
 	/**

@@ -31,12 +31,17 @@ module.exports = class Client {
 	/**
 	 * Конструктор приложения.
 	 */
-	constructor() {
+	constructor(application) {
 		var me = this;
 		
+		me._application = application;
 		me._modules = [];
 		
+		
+		
 		me._middleware = function(request, response) {
+			
+			var appConfig = me._application.config;
 			
 			// HEAD
 			let head = [];
@@ -55,7 +60,9 @@ module.exports = class Client {
 			
 			// Sencha Ext JS
 			let extjsPath = "/vendor/khusamov-sencha-extjs";
-			extjsPath = "http://localhost/ext-5.1.0";
+			if (appConfig.get("sencha.extjs.source.type") == "localhost") {
+				extjsPath = "http://localhost/ext-" + appConfig.get("sencha.extjs.source.version", "5.1.1");
+			}		
 			head.push(`<link href="${extjsPath}/build/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all-debug.css" rel="stylesheet">`);
 			head.push(`<script src="${extjsPath}/build/ext-all-debug.js"></script>`);
 			head.push(`<script src="${extjsPath}/build/packages/ext-locale/build/ext-locale-ru-debug.js"></script>`);
