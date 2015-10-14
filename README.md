@@ -1,13 +1,31 @@
 
 Инсталяция:
+===========
 
-npm install cardinalkeeper --save
-bower install ./node_modules/cardinalkeeper/ --save
+~~~
+nvm ls-remote  
+nvm install v4.1.2  
+nvm use v4.1.2  
+nvm alias default v4.1.2  
+
+npm install cardinalkeeper --save  
+bower install khusamov-extjs --save  
 bower cache clean
+~~~
 
-— — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — — 
+Вариант:
+
+> `bower install ./node_modules/cardinalkeeper/ --save`
+
+пока не катит, так как копирует и всю серверную часть в `bower_components`, 
+чего и следовало ожидать судя по документации на команду 
+`bower install <папка>`.
+
+
+
 
 Глоссарий:
+==========
 
 Приложение
 
