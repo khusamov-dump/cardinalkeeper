@@ -2,14 +2,23 @@
 Инсталяция:
 ===========
 
-~~~
-nvm ls-remote  
-nvm install v4.1.2  
-nvm use v4.1.2  
-nvm alias default v4.1.2  
+## Первый этап:
 
-npm install cardinalkeeper --save  
-bower install khusamov-extjs --save  
+Установка Node.js:
+
+~~~
+nvm ls-remote
+nvm install v4.1.2
+nvm use v4.1.2
+nvm alias default v4.1.2
+~~~
+
+Установка пакетов:
+
+~~~
+npm install cardinalkeeper --save
+bower install khusamov-extjs --save
+bower install pace#~1.0.2 --save
 bower cache clean
 ~~~
 
@@ -21,7 +30,22 @@ bower cache clean
 чего и следовало ожидать судя по документации на команду 
 `bower install <папка>`.
 
+## Второй этап:
 
+После установки пакетов нужно создать следующие файлы:
+
+###.gitignore
+
+~~~
+npm-debug.log  
+node_modules  
+bower_components  
+temp
+~~~
+
+###<название вашего проекта>.ini
+
+###<название вашего проекта>.js
 
 
 Глоссарий:
