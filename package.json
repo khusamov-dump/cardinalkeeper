@@ -3,7 +3,7 @@
 	"description": "Cardinal Keeper 2015",
 	"author": "Khusamov Sukhrob <khusamov@yandex.ru>",
 	"name": "cardinalkeeper",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"main": "cardinalkeeper.js",
 	
 	"repository": {
