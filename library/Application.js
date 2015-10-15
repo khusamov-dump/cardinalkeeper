@@ -131,13 +131,14 @@ module.exports = class Application {
 		result.get = function(path, defaultValue) {
 			let value = result;
 			path = path.split(".");
-			path.forEach(item => {
+			path.every(item => {
 				if (item in value) {
 					value = value[item];
 				} else {
 					value = defaultValue;
 					return false;
 				}
+				return true;
 			});
 			return value;
 		};
