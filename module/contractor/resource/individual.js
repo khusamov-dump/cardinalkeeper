@@ -10,20 +10,40 @@ module.exports = class extends CardinalKeeper.module.Resource {
 	}
 	
 	index(request, response) { // GET
-		var me = this;
-		me.database.query("select * from individual_view")
+		let me = this;
+		
+		let offset = Number(request.query.start || 0);
+		let limit = Number(request.query.limit || 25);
+		
+		let sql = {
+			count: `select count(*) as total from individual_view`,
+			select: `select * from individual_view offset ${offset} limit ${limit}`
+		};
+		
+		me.database
+			.one(sql.count)
 			.then(function(data) {
-				response.send({
-					title: "Список физических лиц",
-					success: true,
-					total: data.length,
-					start: 0,
-					page: 1,
-					data: data
-				});
+				let total = Number(data.total);
+				let promise = me.database
+					.query(sql.select)
+					.then(function(data) {
+						response.send({
+							success: true,
+							start: offset,
+							limit: limit,
+							total: total,
+							data: data
+						});
+					});
+				return promise;
 			})
 			.catch(function(error) {
 				console.error("Ошибка при запросе списка физических лиц:", error);
+				response.send({
+					success: false,
+					message: "Ошибка при запросе списка физических лиц",
+					error: error
+				});
 			});
 	}
 	
@@ -71,14 +91,10 @@ module.exports = class extends CardinalKeeper.module.Resource {
 					});
 			})
 			.then(function(individual) {
-				
 				individual.document["notes"] = request.body["document_notes"];
 				individual.document["date_start"] = request.body["document_date_start"];
 				individual.document["number"] = request.body["document_notes"];
-				
 				return me.database.none(sql.updateOneDocument, individual.document).then(function() { return individual });
-				
-				
 			})
 			.then(function(individual) {
 				response.send({
@@ -90,8 +106,6 @@ module.exports = class extends CardinalKeeper.module.Resource {
 			.catch(function(error) {
 				console.log("Произошла ошибка при вставке нового физического лица:", error);
 			});
-			
-		
 	}
 	
 	update(request, response) { // PUT
