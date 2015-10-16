@@ -62,10 +62,13 @@ module.exports = class Client {
 			let extjsPath = "/vendor/khusamov-sencha-extjs";
 			if (appConfig.get("sencha.extjs.source.type") == "localhost") {
 				extjsPath = "http://localhost/ext-" + appConfig.get("sencha.extjs.source.version", "5.1.1");
-			}		
-			head.push(`<link href="${extjsPath}/build/packages/ext-theme-crisp/build/resources/ext-theme-crisp-all-debug.css" rel="stylesheet">`);
-			head.push(`<script src="${extjsPath}/build/ext-all-debug.js"></script>`);
-			head.push(`<script src="${extjsPath}/build/packages/ext-locale/build/ext-locale-ru-debug.js"></script>`);
+			}
+			let theme = appConfig.get("sencha.extjs.theme", "crisp");
+			let debug = appConfig.get("sencha.extjs.debug") ? "-debug" : "";
+			let locale = appConfig.get("sencha.extjs.locale", "ru");
+			head.push(`<link href="${extjsPath}/build/packages/ext-theme-${theme}/build/resources/ext-theme-${theme}-all${debug}.css" rel="stylesheet">`);
+			head.push(`<script src="${extjsPath}/build/ext-all${debug}.js"></script>`);
+			head.push(`<script src="${extjsPath}/build/packages/ext-locale/build/ext-locale-${locale}${debug}.js"></script>`);
 			
 			// Убрать когда выйдет Хром версии 44
 			// http://javascript.ru/forum/extjs/56067-input-vniz-sekhali-vse.html
@@ -82,13 +85,15 @@ module.exports = class Client {
 			let stores = ["MainMenu"];
 			
 			me._modules.forEach(module => {
+				//namespaces.push(module.config.get("namespace")); // это не прокатит, так как module это объект класса CardinalKeeper.module.Client
+				// и в module.config нет метода get()
 				namespaces.push(module.config.namespace);
 				controllers = controllers.concat(module.controllers);
 			});
 			
 			// Подключение клиентского приложения
 			var appOptions = JSON.stringify({
-				title: "Кардинал Кипер 2015",
+				title: appConfig.get("title", "Кардинал Кипер 2015"),
 				name: "CardinalKeeper",
 				appFolder: "/client",
 				extend: "CardinalKeeper.Application",
