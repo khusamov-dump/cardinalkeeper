@@ -195,7 +195,8 @@ module.exports = class Application {
 		if (configPath) me.init(configPath);
 		me._server = me.listen(me.config.port, function () {
 			var port = me.server.address().port;
-			console.log("Cardinal Keeper application listening at port %s", port);
+			console.log("Cardinal Keeper: Application started.");
+			console.log("Cardinal Keeper: Listening at port %s.", port);
 		});
 		return me;
 	}
