@@ -3,6 +3,9 @@
 
 /* global CardinalKeeper */
 
+//let merge = require("merge");
+let fieldlist = require("./helper/fieldlist.js");
+
 module.exports = class extends CardinalKeeper.module.Resource {
 	
 	constructor(module) {
@@ -109,11 +112,99 @@ module.exports = class extends CardinalKeeper.module.Resource {
 	}
 	
 	update(request, response) { // PUT
+		let me = this;
+		let sql = {
+			selectOneDocument: `
+				select * from document 
+				where document_id = $/document_id/
+			`,
+			selectOneContractor: `
+				select * from contractor 
+				where document_id = $/document_id/
+			`,
+			selectOneIndividual: `
+				select * from individual 
+				where contractor_id = $/contractor_id/
+			`,
+			updateOneDocument: `
+				update document set 
+					notes = $/document_notes/, 
+					date_start = $/document_date_start/, 
+					number = $/document_number/ 
+				where document_id = $/document_id/
+			`,
+			updateOneIndividual: `
+				update individual set 
+					first_name = $/individual_first_name/, 
+					surname = $/individual_surname/, 
+					patronymic = $/individual_patronymic/ 
+				where individual_id = $/individual_id/
+			`
+		};
+		
+		me.database.oneOrNone(sql.selectOneDocument, request.body)
+			.then(function(document) {
+				let promise = me.database.oneOrNone(sql.selectOneContractor, document)
+					.then(function(contractor) {
+						return {
+							document: document,
+							contractor: contractor
+						};
+					});
+				return promise;
+			})
+			.then(function(individualEntity) {
+				let promise = me.database.oneOrNone(sql.selectOneIndividual, individualEntity.contractor)
+					.then(function(individual) {
+						individualEntity.individual = individual;
+						return individualEntity;
+					});
+				return promise;
+			})
+			.then(function(individualEntity) {
+				request.body.individual_id = individualEntity.individual.individual_id;
+				let promise = me.database.tx(function(t) {
+					
+					let batch = [];
+					
+					let updateOneIndividual = "";
+					let list = fieldlist("first_name, surname, patronymic", "individual", request.body);
+					if (list) {
+						updateOneIndividual = `update individual set ${list} where individual_id = $/individual_id/`;
+						batch.push(t.none(updateOneIndividual, request.body));
+					}
+					
+					
+					
+					
+					/*return t.batch([
+						t.none(sql.updateOneIndividual, request.body),
+						t.none(sql.updateOneDocument, request.body)
+					]);*/
+					
+					return t.batch(batch);
+				});
+				return promise;
+			})
+			.then(function(individual) {
+				response.send({
+					success: true
+				});
+			})
+			.catch(function(error) {
+				console.log("Произошла ошибка при обновлении физического лица:", error);
+				response.send({
+					success: false
+				});
+			});
 		
 	}
 	
 	destroy(request, response) { // DELETE
-		
+		response.send({
+			success: false,
+			message: "Метод не реализован"
+		});
 	}
 	
 };
