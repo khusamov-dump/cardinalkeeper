@@ -1,4 +1,8 @@
 
+/**
+ * Базовый класс контроллеров видов модулей для DesktopTabPanel.
+ */
+
 /* global Ext */
 
 Ext.define("CardinalKeeper.controller.base.TabController", {
@@ -17,6 +21,8 @@ Ext.define("CardinalKeeper.controller.base.TabController", {
 		mainMenuStore.getRoot().appendChild(me.getMenu());
 		
 		// Главный маршрут модуля.
+		// Выбранный путь :path конвертируется в имя класса вида модуля, 
+		// на основе которого создается сам вид и добавляется в DesktopTabPanel.
 		var routes = {};
 		routes["/" + me.getMenu().path + "/:path"] = {
 			action: "openViewByPath",
@@ -25,8 +31,6 @@ Ext.define("CardinalKeeper.controller.base.TabController", {
 			}
 		};
 		me.setRoutes(routes);
-		
-		
 		
 	},
 	
@@ -37,19 +41,12 @@ Ext.define("CardinalKeeper.controller.base.TabController", {
 		
 		path = me.getMenu().path + (path ? "/" + path : "");
 		
-		
-		
 		var tabPanel = me.getApplication().getController("Root").getDesktopTabPanel();
 		
 		var viewClassName = me.getNameViewByPath(path);
 		var view = Ext.ClassManager.get(viewClassName);
 		
-		
 		if (!view) console.warn("Не найден вид класса", viewClassName);
-		
-		
-		
-		
 		
 		if (view) {
 			var tab = tabPanel.items.get(me.tabs[viewClassName]);
@@ -64,10 +61,6 @@ Ext.define("CardinalKeeper.controller.base.TabController", {
 			
 			tabPanel.setActiveTab(tab);
 		}
-		
-		
-		
-		
 	},
 	
 	/**
