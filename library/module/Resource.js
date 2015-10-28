@@ -76,4 +76,32 @@ module.exports = class Resource {
 		});
 	}
 	
+	index(request, response) { // GET
+		response.send({
+			success: false,
+			message: "Метод не реализован"
+		});
+	}
+	
+	create(request, response) { // POST
+		response.send({
+			success: false,
+			message: "Метод не реализован"
+		});
+	}
+	
+	update(request, response) { // PUT
+		response.send({
+			success: false,
+			message: "Метод не реализован"
+		});
+	}
+	
+	destroy(request, response) { // DELETE
+		response.send({
+			success: false,
+			message: "Метод не реализован"
+		});
+	}
+	
 };
