@@ -37,8 +37,6 @@ module.exports = class Client {
 		me._application = application;
 		me._modules = [];
 		
-		
-		
 		me._middleware = function(request, response) {
 			
 			var appConfig = me._application.config;
@@ -48,6 +46,8 @@ module.exports = class Client {
 			
 			head.push('<meta charset="utf-8">');
 			head.push('<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">');
+			
+			head.push('<link href="/client/favicon.gif" rel="shortcut icon" type="image/x-icon">');
 			
 			// PACE
 			let paceOptions = JSON.stringify({
