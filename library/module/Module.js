@@ -77,7 +77,8 @@ module.exports = class Module {
 		// Подключить ресурсы модуля.
 		let fs = require("fs");
 		fs.readdirSync(homedir + "/resource").forEach(resource => {
-			me.resource(homedir + "/resource/" + resource);
+			resource = homedir + "/resource/" + resource;
+			if (fs.lstatSync(resource).isFile()) me.resource(resource);
 		});
 		
 		// Клиентская часть модуля.
