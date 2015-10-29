@@ -108,6 +108,9 @@ module.exports = class extends CardinalKeeper.module.Resource {
 			})
 			.catch(function(error) {
 				console.log("Произошла ошибка при вставке нового физического лица:", error);
+				response.send({
+					success: false
+				});
 			});
 	}
 	
@@ -125,20 +128,6 @@ module.exports = class extends CardinalKeeper.module.Resource {
 			selectOneIndividual: `
 				select * from individual 
 				where contractor_id = $/contractor_id/
-			`,
-			updateOneDocument: `
-				update document set 
-					notes = $/document_notes/, 
-					date_start = $/document_date_start/, 
-					number = $/document_number/ 
-				where document_id = $/document_id/
-			`,
-			updateOneIndividual: `
-				update individual set 
-					first_name = $/individual_first_name/, 
-					surname = $/individual_surname/, 
-					patronymic = $/individual_patronymic/ 
-				where individual_id = $/individual_id/
 			`
 		};
 		
@@ -165,22 +154,13 @@ module.exports = class extends CardinalKeeper.module.Resource {
 				request.body.individual_id = individualEntity.individual.individual_id;
 				let promise = me.database.tx(function(t) {
 					
-					let batch = [];
+					let batch = [], list;
 					
-					let updateOneIndividual = "";
-					let list = fieldlist("first_name, surname, patronymic", "individual", request.body);
-					if (list) {
-						updateOneIndividual = `update individual set ${list} where individual_id = $/individual_id/`;
-						batch.push(t.none(updateOneIndividual, request.body));
-					}
+					list = fieldlist("first_name, surname, patronymic", "individual", request.body);
+					if (list) batch.push(t.none(`update individual set ${list} where individual_id = $/individual_id/`, request.body));
 					
-					
-					
-					
-					/*return t.batch([
-						t.none(sql.updateOneIndividual, request.body),
-						t.none(sql.updateOneDocument, request.body)
-					]);*/
+					list = fieldlist("notes, date_start, number", "document", request.body);
+					if (list) batch.push(t.none(`update document set ${list} where document_id = $/document_id/`, request.body));
 					
 					return t.batch(batch);
 				});
