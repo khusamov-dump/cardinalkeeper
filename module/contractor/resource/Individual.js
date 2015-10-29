@@ -3,16 +3,19 @@
 
 /* global CardinalKeeper */
 
-//let merge = require("merge");
-let fieldlist = require("./helper/fieldlist.js");
+//let fieldlist = require("./helper/fieldlist.js");
+
+/**
+ * @class CardinalKeeper.module.contractor.resource.Individual
+ */
 
 module.exports = class extends CardinalKeeper.module.Resource {
 	
 	constructor(module) {
-		super(module, "individual");
+		super(module, "individual", __dirname);
 	}
 	
-	index(request, response) { // GET
+	/*index(request, response) { // GET
 		let me = this;
 		
 		let offset = Number(request.query.start || 0);
@@ -48,9 +51,9 @@ module.exports = class extends CardinalKeeper.module.Resource {
 					error: error
 				});
 			});
-	}
+	}*/
 	
-	create(request, response) { // POST
+	/*create(request, response) { // POST
 		var me = this;
 		var sql = {
 			insertIndividual: `
@@ -112,9 +115,9 @@ module.exports = class extends CardinalKeeper.module.Resource {
 					success: false
 				});
 			});
-	}
+	}*/
 	
-	update(request, response) { // PUT
+	/*update(request, response) { // PUT
 		let me = this;
 		let sql = {
 			selectOneDocument: `
@@ -178,13 +181,13 @@ module.exports = class extends CardinalKeeper.module.Resource {
 				});
 			});
 		
-	}
+	}*/
 	
-	destroy(request, response) { // DELETE
+	/*destroy(request, response) { // DELETE
 		response.send({
 			success: false,
 			message: "Метод не реализован"
 		});
-	}
+	}*/
 	
 };

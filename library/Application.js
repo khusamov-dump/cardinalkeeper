@@ -2,6 +2,8 @@
 "use strict";
 /* global CardinalKeeper */
 
+let autoload = require("jsymfony-autoload");
+
 /**
  * Класс приложения.
  * @class CardinalKeeper.Application
@@ -155,8 +157,24 @@ module.exports = class Application {
 	module(path) {
 		var me = this;
 		path = path.replace(/^.\//, me.config.path + "/");
+		path = path.replace(/^..\//, me.config.path + "/../");
+		
+		path = require("path").normalize(path);
+		
 		let Module = require(path);
 		let module = new Module(me);
+		
+		//console.log("Module", module._homedir);
+		
+		// Регистрируем пространство имен модуля.
+		//autoload.register("CardinalKeeper.module." + module.name, require("path").dirname(path));
+		
+		autoload.register("CardinalKeeper.module." + module.name, module._homedir); // https://toster.ru/q/261490
+		
+		
+		//console.log("CardinalKeeper.module." + module.name, require("path").dirname(path));
+		
+		
 		me.express.use("/api/" + module.name, module.express);
 		me.client.use(module.client);
 		return me;
