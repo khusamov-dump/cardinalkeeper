@@ -164,12 +164,13 @@ module.exports = class Application {
 		let Module = require(path);
 		let module = new Module(me);
 		
-		//console.log("Module", module._homedir);
+		//console.log("Module", require("path").dirname(require.resolve(path)));
 		
 		// Регистрируем пространство имен модуля.
 		//autoload.register("CardinalKeeper.module." + module.name, require("path").dirname(path));
 		
-		autoload.register("CardinalKeeper.module." + module.name, module._homedir); // https://toster.ru/q/261490
+		//autoload.register("CardinalKeeper.module." + module.name, module._homedir); // https://toster.ru/q/261490
+		autoload.register("CardinalKeeper.module." + module.name, require("path").dirname(require.resolve(path))); // https://toster.ru/q/261490
 		
 		
 		//console.log("CardinalKeeper.module." + module.name, require("path").dirname(path));
