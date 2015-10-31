@@ -64,10 +64,11 @@ module.exports = class extends CardinalKeeper.module.resource.Action {
 				return me.database.none(sql.updateOneDocument, individual.document).then(function() { return individual });
 			})
 			.then(function(individual) {
+				request.body.client_id = request.body.document_id;
+				request.body.document_id = individual.document.document_id;
 				response.send({
 					success: true,
-					data: request.body,
-					individual: individual
+					data: request.body
 				});
 			})
 			.catch(function(error) {
