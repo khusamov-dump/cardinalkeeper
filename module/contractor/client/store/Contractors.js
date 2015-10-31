@@ -1,5 +1,7 @@
 
-Ext.define("CardinalKeeper.module.store.Contractors", {
+/* global Ext */
+
+Ext.define("CardinalKeeper.module.contractor.store.Contractors", {
 	
 	extend: "Ext.data.Store",
 	

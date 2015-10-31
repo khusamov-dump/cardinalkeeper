@@ -1,9 +1,11 @@
 
-Ext.define("CardinalKeeper.module.store.Individuals", {
+/* global Ext */
+
+Ext.define("CardinalKeeper.module.contractor.store.Individuals", {
 	
 	extend: "Ext.data.Store",
 	
-	alias: "store.individuals",
+	alias: "store.contractor-individuals",
 	
 	model: "CardinalKeeper.module.contractor.model.Individual"
 	

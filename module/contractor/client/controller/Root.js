@@ -19,6 +19,8 @@ Ext.define("CardinalKeeper.module.contractor.controller.Root", {
 		"Legal"
 	],
 	
+	stores: ["Individuals"],
+	
 	menu: {
 		text: "Контрагенты",
 		path: "contractor",

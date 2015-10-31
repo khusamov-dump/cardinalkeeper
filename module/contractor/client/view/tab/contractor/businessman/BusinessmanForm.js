@@ -25,7 +25,7 @@ Ext.define("CardinalKeeper.module.contractor.view.tab.contractor.businessman.Bus
 		allowBlank: false,
 		autoLoadOnValue: true,
 		store: {
-			type: "individuals"
+			type: "contractor-individuals"
 		},
 		displayField: "contractor_title",
 		valueField: "document_id",
