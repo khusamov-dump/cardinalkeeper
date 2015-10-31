@@ -23,21 +23,11 @@ module.exports = class extends CardinalKeeper.module.Resource {
 				});
 			})
 			.catch(function(error) {
+				response.send({
+					success: false
+				});
 				console.error("Ошибка при запросе списка контрагентов:", error);
 			});
-	}
-	
-	create(request, response) { // POST
-		//var me = this;
-		
-	}
-	
-	update(request, response) { // PUT
-		
-	}
-	
-	destroy(request, response) { // DELETE
-		
 	}
 	
 };
